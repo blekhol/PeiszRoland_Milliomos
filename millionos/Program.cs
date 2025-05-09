@@ -6,7 +6,7 @@
 		{
 			List<List<Kerdes>> kerdesek = KerdesOlvasas();
 			List<Sorkerdes> sorkerdesek = SorkerdesOlvasas();
-
+			
 
 		}
 
