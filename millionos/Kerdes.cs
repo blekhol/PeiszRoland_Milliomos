@@ -11,10 +11,10 @@ namespace millionos
 		private int szint;
 		private string kerdesSzoveg;
 		private List<string> valaszok;
-		private int helyes;
+		private string helyes;
 		private string kategoria;
 
-		public Kerdes(int szint, string kerdes, List<string> valaszok, int helyes, string kategoria)
+		public Kerdes(int szint, string kerdes, List<string> valaszok, string helyes, string kategoria)
 		{
 			this.szint = szint;
 			this.kerdesSzoveg = kerdes;
@@ -25,7 +25,7 @@ namespace millionos
 
 		public string KerdesSzoveg { get => kerdesSzoveg; set => kerdesSzoveg = value; }
 		public List<string> Valaszok { get => valaszok; set => valaszok = value; }
-		public int Helyes { get => helyes; set => helyes = value; }
+		public string Helyes { get => helyes; set => helyes = value; }
 		public string Kategoria { get => kategoria; set => kategoria = value; }
 		public int Szint { get => szint; set => szint = value; }
 	}

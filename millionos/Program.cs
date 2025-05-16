@@ -9,7 +9,14 @@
 			
 			Jatek jatek = new Jatek();
 
-			jatek.SorkerdesGeneralas(sorkerdesek);
+			if (jatek.SorkerdesGeneralas(sorkerdesek))
+			{
+				bool fut = true;
+				while(jatek.Pont < 15 && fut)
+				{
+					fut = jatek.KerdesGeneralas(kerdesek);
+				}
+			}
 		}
 
 		static List<Sorkerdes> SorkerdesOlvasas()
@@ -60,18 +67,8 @@
 
 				List<string> valaszok = [reszek[2], reszek[3], reszek[4], reszek[5]];
 
-				int helyes = 0;
-
-				switch (reszek[6])
-				{
-					case "A": helyes = 0; break;
-					case "B": helyes = 1; break;
-					case "C": helyes = 2; break;
-					case "D": helyes = 3; break;
-					default: break;
-				}
 									  //szint de indexként
-				Kerdes k = new Kerdes(int.Parse(reszek[0]) - 1, reszek[1], valaszok, helyes, reszek[7]);
+				Kerdes k = new Kerdes(int.Parse(reszek[0]) - 1, reszek[1], valaszok, reszek[6], reszek[7]);
 
 				kerdesek[k.Szint].Add(k);
 			}
