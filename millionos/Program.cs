@@ -7,18 +7,24 @@
 			List<List<Kerdes>> kerdesek = KerdesOlvasas();
 			List<Sorkerdes> sorkerdesek = SorkerdesOlvasas();
 			
+			Jatek jatek = new Jatek();
 
+			jatek.SorkerdesGeneralas(sorkerdesek);
 		}
 
 		static List<Sorkerdes> SorkerdesOlvasas()
 		{
 			List<Sorkerdes> sorkerdesek = [];
 
-			StreamReader sr = new StreamReader("kerdes.txt");
+			StreamReader sr = new StreamReader("sorkerdes.txt");
 			string[] sorok = sr.ReadToEnd().Split("\n");
 
 			foreach (string sor in sorok)
 			{
+				if (sor.Equals(""))
+				{
+					return sorkerdesek;
+				}
 				string[] reszek = sor.Split(";");
 
 				List<string> valaszok = [reszek[1], reszek[2], reszek[3], reszek[4]];
@@ -46,7 +52,11 @@
 
 			foreach(string sor in sorok)
 			{
-				string[] reszek = sor.Split(";");
+                if (sor.Equals(""))
+                {
+                    return kerdesek;
+                }
+                string[] reszek = sor.Split(";");
 
 				List<string> valaszok = [reszek[2], reszek[3], reszek[4], reszek[5]];
 
