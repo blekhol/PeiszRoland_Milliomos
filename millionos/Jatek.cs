@@ -10,7 +10,7 @@ namespace millionos
 	internal class Jatek
 	{
 		private int pont = 0;
-		private int[] nyeremenyek = [10000, 20000, 50000, 100000, 250000, 500000, 750000, 1000000, 1500000, 2000000, 5000000, 10000000, 15000000, 25000000, 50000000];
+        private int[] nyeremenyek = [0, 10000, 20000, 50000, 100000, 250000, 500000, 750000, 1000000, 1500000, 2000000, 5000000, 10000000, 15000000, 25000000, 50000000];
 
         static Random rnd = new Random();
 
@@ -44,16 +44,47 @@ namespace millionos
 
 		public bool KerdesGeneralas(List<List<Kerdes>> kerdesek)
 		{
-			Kerdes k = kerdesek[pont][rnd.Next(0, kerdesek.Count - 1)];
-            Console.WriteLine("1. " + k.KerdesSzoveg);
+			Kerdes k = kerdesek[pont][rnd.Next(0, kerdesek[pont].Count)];
+            Console.WriteLine($"{pont+1}. " + k.KerdesSzoveg);
 			Console.WriteLine($"\na) {k.Valaszok[0]}\t\t\tb) {k.Valaszok[1]}\nc) {k.Valaszok[2]}\t\t\td) {k.Valaszok[3]}");
             Console.WriteLine("\nÍrja be a helyes válasz betűjelét (pl: A)");
 
             string valasz = Console.ReadLine().Trim().ToUpper();
 			if (valasz.Equals(k.Helyes))
 			{
-                Console.WriteLine($"Helyes válasz! Továbbmehet a következő kérdésre. Eddig összegűjtött pénz: {nyeremenyek[pont]}");
 				pont++;
+                if (pont == 5 || pont == 10)
+				{
+                    Console.WriteLine($"Helyes válasz! Továbbmehet a következő kérdésre VAGY elmehet annyival amennyit eddig összegyüjtött. Eddig összegűjtött pénz: {nyeremenyek[pont]}\nKilép? Igen(i) Nem(n)");
+                    string kilep = "";
+                    bool fut = true;
+                    while(fut)
+                    {
+                        kilep = Console.ReadLine().Trim().ToUpper();
+                        if (kilep.Equals("I"))
+                        {
+                            fut = false;
+                            return false;
+                        }
+                        else if (kilep.Equals("N"))
+                        {
+                            fut = false;
+                            Console.Clear();
+                            return true;
+                        }
+                        else
+                        {
+                            {
+                                Console.WriteLine("Nincs ilyen opció");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"Helyes válasz! Továbbmehet a következő kérdésre. Eddig összegűjtött pénz: {nyeremenyek[pont]}");
+                }
+
                 Console.ReadKey();
                 Console.Clear();
                 return true;
@@ -65,6 +96,19 @@ namespace millionos
                 Console.Clear();
                 return false;
             }
+        }
+
+		public void JatekVege()
+		{
+            if (pont == 15)
+			{
+                Console.WriteLine("\nSikeresen megválaszolta az összes kérdést helyesen! Öné az 50 millió foirnt");
+            }
+			else
+			{
+                Console.WriteLine($"\nSikeresen megválaszolt {pont} kérdést és eljutott {nyeremenyek[pont]}Ft-ig, de sajnos kiesett.");
+			}
+            Console.ReadKey();
         }
 	}	
 }

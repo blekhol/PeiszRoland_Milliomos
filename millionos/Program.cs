@@ -12,10 +12,16 @@
 			if (jatek.SorkerdesGeneralas(sorkerdesek))
 			{
 				bool fut = true;
-				while(jatek.Pont < 15 && fut)
+				while(fut)
 				{
+					if (jatek.Pont == 15)
+					{
+						fut = false;
+						break;
+					}
 					fut = jatek.KerdesGeneralas(kerdesek);
 				}
+				jatek.JatekVege();
 			}
 		}
 
