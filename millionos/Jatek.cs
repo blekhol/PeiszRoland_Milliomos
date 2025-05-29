@@ -22,8 +22,10 @@ namespace millionos
 			Sorkerdes sk = sorkerdesek[rnd.Next(0, sorkerdesek.Count - 1)];
 
 			Console.WriteLine(sk.KerdesSzoveg);
-			Console.WriteLine($"\na) {sk.Valaszok[0]}\t\t\tb) {sk.Valaszok[1]}\nc) {sk.Valaszok[2]}\t\t\td) {sk.Valaszok[3]}");
-			Console.WriteLine("\nÍrja be a helyes válasz sorrendjét(pl: ABCD): ");
+            int leghosszabbElso = Math.Max(sk.Valaszok[0].Length, sk.Valaszok[2].Length);
+            Console.WriteLine($"{sk.Valaszok[0].PadRight(leghosszabbElso + 6)}{sk.Valaszok[1]}");
+            Console.WriteLine($"{sk.Valaszok[2].PadRight(leghosszabbElso + 6)}{sk.Valaszok[3]}");
+            Console.WriteLine("\nÍrja be a helyes válasz sorrendjét(pl: ABCD): ");
 			string valasz = Console.ReadLine().Trim().ToUpper();
 
 			if (valasz.Equals(sk.HelyesSorrend))
@@ -46,7 +48,9 @@ namespace millionos
 		{
 			Kerdes k = kerdesek[pont][rnd.Next(0, kerdesek[pont].Count)];
             Console.WriteLine($"{pont+1}. " + k.KerdesSzoveg);
-			Console.WriteLine($"\na) {k.Valaszok[0]}\t\t\tb) {k.Valaszok[1]}\nc) {k.Valaszok[2]}\t\t\td) {k.Valaszok[3]}");
+            int leghosszabbElso = Math.Max(k.Valaszok[0].Length, k.Valaszok[2].Length);
+            Console.WriteLine($"{k.Valaszok[0].PadRight(leghosszabbElso + 6)}{k.Valaszok[1]}");
+            Console.WriteLine($"{k.Valaszok[2].PadRight(leghosszabbElso + 6)}{k.Valaszok[3]}");
             Console.WriteLine("\nÍrja be a helyes válasz betűjelét (pl: A)");
 
             string valasz = Console.ReadLine().Trim().ToUpper();
