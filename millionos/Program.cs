@@ -4,6 +4,9 @@
 	{
 		static void Main(string[] args)
 		{
+			Console.SetBufferSize(120, 30);
+			Console.SetWindowSize(120, 30);
+
 			List<List<Kerdes>> kerdesek = KerdesOlvasas();
 			List<Sorkerdes> sorkerdesek = SorkerdesOlvasas();
 			
@@ -14,7 +17,7 @@
 				bool fut = true;
 				while(fut)
 				{
-					if (jatek.Pont == 15)
+                    if (jatek.Pont == 15)
 					{
 						fut = false;
 						break;

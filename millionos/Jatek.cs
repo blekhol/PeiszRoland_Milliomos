@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace millionos
 {
@@ -11,11 +12,13 @@ namespace millionos
 	{
 		private int pont = 0;
         private int[] nyeremenyek = [0, 10000, 20000, 50000, 100000, 250000, 500000, 750000, 1000000, 1500000, 2000000, 5000000, 10000000, 15000000, 25000000, 50000000];
+        private bool[] segitsegek = [true, true, true];
 
         static Random rnd = new Random();
 
         public int Pont { get => pont; }
         public int[] Nyeremenyek { get => nyeremenyek; }
+        public bool[] Segitsegek { get => segitsegek; set => segitsegek = value; }
 
         public bool SorkerdesGeneralas(List<Sorkerdes> sorkerdesek)
 		{
@@ -23,8 +26,8 @@ namespace millionos
 
 			Console.WriteLine(sk.KerdesSzoveg);
             int leghosszabbElso = Math.Max(sk.Valaszok[0].Length, sk.Valaszok[2].Length);
-            Console.WriteLine($"{sk.Valaszok[0].PadRight(leghosszabbElso + 6)}{sk.Valaszok[1]}");
-            Console.WriteLine($"{sk.Valaszok[2].PadRight(leghosszabbElso + 6)}{sk.Valaszok[3]}");
+            Console.WriteLine($"a) {sk.Valaszok[0].PadRight(leghosszabbElso + 6)}b) {sk.Valaszok[1]}");
+            Console.WriteLine($"c) {sk.Valaszok[2].PadRight(leghosszabbElso + 6)}d) {sk.Valaszok[3]}");
             Console.WriteLine("\nÍrja be a helyes válasz sorrendjét(pl: ABCD): ");
 			string valasz = Console.ReadLine().Trim().ToUpper();
 
@@ -46,11 +49,12 @@ namespace millionos
 
 		public bool KerdesGeneralas(List<List<Kerdes>> kerdesek)
 		{
-			Kerdes k = kerdesek[pont][rnd.Next(0, kerdesek[pont].Count)];
+            Segitseg();
+            Kerdes k = kerdesek[pont][rnd.Next(0, kerdesek[pont].Count)];
             Console.WriteLine($"{pont+1}. " + k.KerdesSzoveg);
             int leghosszabbElso = Math.Max(k.Valaszok[0].Length, k.Valaszok[2].Length);
-            Console.WriteLine($"{k.Valaszok[0].PadRight(leghosszabbElso + 6)}{k.Valaszok[1]}");
-            Console.WriteLine($"{k.Valaszok[2].PadRight(leghosszabbElso + 6)}{k.Valaszok[3]}");
+            Console.WriteLine($"a) {k.Valaszok[0].PadRight(leghosszabbElso + 6)}b) {k.Valaszok[1]}");
+            Console.WriteLine($"c) {k.Valaszok[2].PadRight(leghosszabbElso + 6)}d) {k.Valaszok[3]}");
             Console.WriteLine("\nÍrja be a helyes válasz betűjelét (pl: A)");
 
             string valasz = Console.ReadLine().Trim().ToUpper();
@@ -113,6 +117,14 @@ namespace millionos
                 Console.WriteLine($"\nSikeresen megválaszolt {pont} kérdést és eljutott {nyeremenyek[pont]}Ft-ig, de sajnos kiesett.");
 			}
             Console.ReadKey();
+        }
+
+        public void Segitseg()
+        {
+            string szoveg = "Segítségek: | 50/50 | Telefon | Közönség |";
+            Console.SetCursorPosition(119 - szoveg.Length, 28);
+            Console.Write(szoveg);
+            Console.SetCursorPosition(0, 0);
         }
 	}	
 }
