@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace millionos
 {
@@ -25,7 +24,8 @@ namespace millionos
 			Sorkerdes sk = sorkerdesek[rnd.Next(0, sorkerdesek.Count - 1)];
 
 			Console.WriteLine(sk.KerdesSzoveg);
-            int leghosszabbElso = Math.Max(sk.Valaszok[0].Length, sk.Valaszok[2].Length);
+			Console.WriteLine(sk.HelyesSorrend);
+			int leghosszabbElso = Math.Max(sk.Valaszok[0].Length, sk.Valaszok[2].Length);
             Console.WriteLine($"a) {sk.Valaszok[0].PadRight(leghosszabbElso + 6)}b) {sk.Valaszok[1]}");
             Console.WriteLine($"c) {sk.Valaszok[2].PadRight(leghosszabbElso + 6)}d) {sk.Valaszok[3]}");
             Console.WriteLine("\nÍrja be a helyes válasz sorrendjét(pl: ABCD): ");
@@ -52,58 +52,103 @@ namespace millionos
             Segitseg();
             Kerdes k = kerdesek[pont][rnd.Next(0, kerdesek[pont].Count)];
             Console.WriteLine($"{pont+1}. " + k.KerdesSzoveg);
+            Console.WriteLine(k.Helyes);
             int leghosszabbElso = Math.Max(k.Valaszok[0].Length, k.Valaszok[2].Length);
-            Console.WriteLine($"a) {k.Valaszok[0].PadRight(leghosszabbElso + 6)}b) {k.Valaszok[1]}");
-            Console.WriteLine($"c) {k.Valaszok[2].PadRight(leghosszabbElso + 6)}d) {k.Valaszok[3]}");
+
+			(int Left, int Top)[] valaszHelyek = new (int Left, int Top)[4];
+
+			valaszHelyek[0] = (Console.CursorLeft, Console.CursorTop);
+			Console.Write($"a) {k.Valaszok[0].PadRight(leghosszabbElso + 6)}");
+			valaszHelyek[1] = (Console.CursorLeft, Console.CursorTop);
+			Console.WriteLine($"b) { k.Valaszok[1]}");
+			valaszHelyek[2] = (Console.CursorLeft, Console.CursorTop);
+			Console.Write($"c) {k.Valaszok[2].PadRight(leghosszabbElso + 6)}");
+			valaszHelyek[3] = (Console.CursorLeft, Console.CursorTop);
+			Console.WriteLine($"d) {k.Valaszok[3]}");
             Console.WriteLine("\nÍrja be a helyes válasz betűjelét (pl: A)");
 
-            string valasz = Console.ReadLine().Trim().ToUpper();
-			if (valasz.Equals(k.Helyes))
-			{
-				pont++;
-                if (pont == 5 || pont == 10)
-				{
-                    Console.WriteLine($"Helyes válasz! Továbbmehet a következő kérdésre VAGY elmehet annyival amennyit eddig összegyüjtött. Eddig összegűjtött pénz: {nyeremenyek[pont]}\nKilép? Igen(i) Nem(n)");
-                    string kilep = "";
-                    bool fut = true;
-                    while(fut)
-                    {
-                        kilep = Console.ReadLine().Trim().ToUpper();
-                        if (kilep.Equals("I"))
-                        {
-                            fut = false;
-                            return false;
-                        }
-                        else if (kilep.Equals("N"))
-                        {
-                            fut = false;
-                            Console.Clear();
-                            return true;
-                        }
-                        else
-                        {
-                            {
-                                Console.WriteLine("Nincs ilyen opció");
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Helyes válasz! Továbbmehet a következő kérdésre. Eddig összegűjtött pénz: {nyeremenyek[pont]}");
-                }
+            string valasz = "";
+            bool valaszNezes = true;
 
-                Console.ReadKey();
-                Console.Clear();
-                return true;
-            }
-			else
-			{
-                Console.WriteLine($"Helytelen válasz! Helyes: {k.Helyes}\nVége a játéknak");
-                Console.ReadKey();
-                Console.Clear();
-                return false;
-            }
+			while (valaszNezes)
+            {
+				valasz = Console.ReadLine().Trim().ToUpper();
+				if (valasz.Equals(k.Helyes))
+				{
+					pont++;
+					if (pont == 5 || pont == 10)
+					{
+						Console.WriteLine($"Helyes válasz! Továbbmehet a következő kérdésre VAGY elmehet annyival amennyit eddig összegyüjtött. Eddig összegűjtött pénz: {nyeremenyek[pont]}\nKilép? Igen(i) Nem(n)");
+						string kilep = "";
+						bool fut = true;
+						while (fut)
+						{
+							kilep = Console.ReadLine().Trim().ToUpper();
+							if (kilep.Equals("I"))
+							{
+								fut = false;
+								return false;
+							}
+							else if (kilep.Equals("N"))
+							{
+								fut = false;
+								Console.Clear();
+								return true;
+							}
+							else
+							{
+								{
+									Console.WriteLine("Nincs ilyen opció");
+								}
+							}
+						}
+					}
+					else
+					{
+						Console.WriteLine($"Helyes válasz! Továbbmehet a következő kérdésre. Eddig összegűjtött pénz: {nyeremenyek[pont]}");
+					}
+
+					Console.ReadKey();
+					Console.Clear();
+					return true;
+				}
+				else if (valasz.Equals("Q") || valasz.Equals("W") || valasz.Equals("E")) 
+				{
+					switch (valasz)
+					{
+						case "Q":
+							if (segitsegek[0])
+							{
+								segitsegek[0] = false;
+
+								int randomRossz = rnd.Next(0, 4);
+								while (randomRossz == k.Valaszok.IndexOf(k.Helyes))
+								{
+									randomRossz = rnd.Next(0, 4);
+								}
+								for (int i = 0; i < k.Valaszok.Count; i++)
+								{
+									if (i != randomRossz && i != k.Valaszok.IndexOf(k.Helyes))
+									{
+										Console.SetCursorPosition(valaszHelyek[i].Left, valaszHelyek[i].Top);
+										
+									}
+								}
+                            }
+
+							break;
+						default: break;
+					}
+				}
+				else
+				{
+					Console.WriteLine($"Helytelen válasz! Helyes: {k.Helyes}\nVége a játéknak");
+					Console.ReadKey();
+					Console.Clear();
+					return false;
+				}
+			}
+			return false;
         }
 
 		public void JatekVege()
@@ -121,7 +166,10 @@ namespace millionos
 
         public void Segitseg()
         {
-            string szoveg = "Segítségek: | 50/50 | Telefon | Közönség |";
+			string masik = "Segítség használatához írja be a betűjelét";
+			Console.SetCursorPosition(119 - masik.Length, 27);
+			Console.Write(masik);
+			string szoveg = "Segítségek: | 50/50 (q) | Telefon (w) | Közönség (e) |";
             Console.SetCursorPosition(119 - szoveg.Length, 28);
             Console.Write(szoveg);
             Console.SetCursorPosition(0, 0);
