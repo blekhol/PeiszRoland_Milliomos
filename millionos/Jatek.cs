@@ -72,9 +72,14 @@ namespace millionos
 
 			while (valaszNezes)
             {
+				(int Left, int Top) userValasz = (Console.CursorLeft, Console.CursorTop);
 				valasz = Console.ReadLine().Trim().ToUpper();
-				if (valasz.Equals(k.Helyes))
+				Console.SetCursorPosition(userValasz.Left, userValasz.Top);
+                Console.Write(new string(' ', valasz.Length));
+
+                if (valasz.Equals(k.Helyes))
 				{
+					valaszNezes = false;
 					pont++;
 					if (pont == 5 || pont == 10)
 					{
@@ -121,19 +126,32 @@ namespace millionos
 							{
 								segitsegek[0] = false;
 
-								int randomRossz = rnd.Next(0, 4);
-								while (randomRossz == k.Valaszok.IndexOf(k.Helyes))
+								string[] betuValaszIndex = ["A", "B", "C", "D"];
+								int helyesIndex = Array.IndexOf(betuValaszIndex, k.Helyes);
+
+                                int randomRossz = rnd.Next(0, 4);
+								while (randomRossz == helyesIndex)
 								{
 									randomRossz = rnd.Next(0, 4);
 								}
-								for (int i = 0; i < k.Valaszok.Count; i++)
+								for (int i = 0; i < 4; i++)
 								{
-									if (i != randomRossz && i != k.Valaszok.IndexOf(k.Helyes))
+                                    if (i != helyesIndex && i != randomRossz)
 									{
 										Console.SetCursorPosition(valaszHelyek[i].Left, valaszHelyek[i].Top);
-										
+
+                                        Console.Write(new string(' ', k.Valaszok[i].Length + 3));
 									}
 								}
+								Console.SetCursorPosition(userValasz.Left, userValasz.Top);
+                            }
+							else
+							{
+                                Console.WriteLine("Már elhasználta ezt a segítséget");
+								Console.ReadKey(true);
+								Console.SetCursorPosition(userValasz.Left, userValasz.Top);
+								Console.Write(new string(' ', 50));
+                                Console.SetCursorPosition(userValasz.Left, userValasz.Top);
                             }
 
 							break;
@@ -142,6 +160,7 @@ namespace millionos
 				}
 				else
 				{
+					valaszNezes = false;
 					Console.WriteLine($"Helytelen válasz! Helyes: {k.Helyes}\nVége a játéknak");
 					Console.ReadKey();
 					Console.Clear();
@@ -169,7 +188,19 @@ namespace millionos
 			string masik = "Segítség használatához írja be a betűjelét";
 			Console.SetCursorPosition(119 - masik.Length, 27);
 			Console.Write(masik);
-			string szoveg = "Segítségek: | 50/50 (q) | Telefon (w) | Közönség (e) |";
+			string szoveg = "Segítségek:";
+            if (segitsegek[0])
+			{
+				szoveg += " 50 / 50(q) |";
+            }
+            if (segitsegek[1])
+            {
+                szoveg += " Telefon(w) |";
+            }
+            if (segitsegek[2])
+            {
+                szoveg += " Közönség(e)";
+            }
             Console.SetCursorPosition(119 - szoveg.Length, 28);
             Console.Write(szoveg);
             Console.SetCursorPosition(0, 0);
