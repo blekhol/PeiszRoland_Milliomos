@@ -52,17 +52,17 @@ namespace millionos
             Segitseg();
             Kerdes k = kerdesek[pont][rnd.Next(0, kerdesek[pont].Count)];
             Console.WriteLine($"{pont+1}. " + k.KerdesSzoveg);
-            Console.WriteLine(k.Helyes);
+            //Teszteléshez: Console.WriteLine(k.Helyes);
             int leghosszabbElso = Math.Max(k.Valaszok[0].Length, k.Valaszok[2].Length);
 
 			(int Left, int Top)[] valaszHelyek = new (int Left, int Top)[4];
 
 			valaszHelyek[0] = (Console.CursorLeft, Console.CursorTop);
-			Console.Write($"a) {k.Valaszok[0].PadRight(leghosszabbElso + 6)}");
+			Console.Write($"a) {k.Valaszok[0].PadRight(leghosszabbElso + 10)}");
 			valaszHelyek[1] = (Console.CursorLeft, Console.CursorTop);
 			Console.WriteLine($"b) { k.Valaszok[1]}");
 			valaszHelyek[2] = (Console.CursorLeft, Console.CursorTop);
-			Console.Write($"c) {k.Valaszok[2].PadRight(leghosszabbElso + 6)}");
+			Console.Write($"c) {k.Valaszok[2].PadRight(leghosszabbElso + 10)}");
 			valaszHelyek[3] = (Console.CursorLeft, Console.CursorTop);
 			Console.WriteLine($"d) {k.Valaszok[3]}");
             Console.WriteLine("\nÍrja be a helyes válasz betűjelét (pl: A)");
@@ -126,17 +126,14 @@ namespace millionos
 							{
 								segitsegek[0] = false;
 
-								string[] betuValaszIndex = ["A", "B", "C", "D"];
-								int helyesIndex = Array.IndexOf(betuValaszIndex, k.Helyes);
-
                                 int randomRossz = rnd.Next(0, 4);
-								while (randomRossz == helyesIndex)
+								while (randomRossz == k.HelyesIndex)
 								{
 									randomRossz = rnd.Next(0, 4);
 								}
 								for (int i = 0; i < 4; i++)
 								{
-                                    if (i != helyesIndex && i != randomRossz)
+                                    if (i != k.HelyesIndex && i != randomRossz)
 									{
 										Console.SetCursorPosition(valaszHelyek[i].Left, valaszHelyek[i].Top);
 
@@ -153,8 +150,66 @@ namespace millionos
 								Console.Write(new string(' ', 50));
                                 Console.SetCursorPosition(userValasz.Left, userValasz.Top);
                             }
-
 							break;
+
+						case "W":
+							if (segitsegek[1])
+							{
+								segitsegek[1] = false;
+
+								List<string> valaszLista = k.Valaszok;
+								for (int i = 0;i < 8; i++)
+								{
+									valaszLista.Add(k.Helyes);
+								}
+
+								Console.WriteLine($"Szerintem a helyes válasz: {valaszLista[rnd.Next(0, valaszLista.Count)]}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Már elhasználta ezt a segítséget");
+                                Console.ReadKey(true);
+                                Console.SetCursorPosition(userValasz.Left, userValasz.Top);
+                                Console.Write(new string(' ', 50));
+                                Console.SetCursorPosition(userValasz.Left, userValasz.Top);
+                            }
+                            break;
+						case "E":
+							if (segitsegek[2])
+							{
+								segitsegek[2] = false;
+
+								int[] rosszEselyek = new int[3];
+								
+								int joEsely = rnd.Next(50, 91);
+								for (int i = 0; i < 2; i++)
+								{
+									rosszEselyek[i] = rnd.Next(0, 101-(joEsely+rosszEselyek.Sum()));
+								}
+								rosszEselyek[2] = 100 - (joEsely + rosszEselyek.Sum());
+
+								rosszEselyek.OrderBy(x => rnd.Next()).ToArray();
+
+								List<int> osszesEsely = rosszEselyek.ToList();
+								osszesEsely.Insert(k.HelyesIndex, joEsely);
+
+								for (int i = 0; i < 4; i++)
+								{
+                                    Console.SetCursorPosition(valaszHelyek[i].Left + k.Valaszok[i].Length + 4, valaszHelyek[i].Top);
+									Console.Write($"({osszesEsely[i]}%)");
+                                }
+
+								Console.SetCursorPosition(userValasz.Left, userValasz.Top);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Már elhasználta ezt a segítséget");
+                                Console.ReadKey(true);
+                                Console.SetCursorPosition(userValasz.Left, userValasz.Top);
+                                Console.Write(new string(' ', 50));
+                                Console.SetCursorPosition(userValasz.Left, userValasz.Top);
+                            }
+                            break;
 						default: break;
 					}
 				}

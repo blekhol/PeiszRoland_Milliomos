@@ -13,6 +13,7 @@ namespace millionos
 		private List<string> valaszok;
 		private string helyes;
 		private string kategoria;
+		private int helyesIndex;
 
 		public Kerdes(int szint, string kerdes, List<string> valaszok, string helyes, string kategoria)
 		{
@@ -21,12 +22,15 @@ namespace millionos
 			this.valaszok = valaszok;
 			this.helyes = helyes;
 			this.kategoria = kategoria;
-		}
+
+            helyesIndex = Array.IndexOf(["A", "B", "C", "D"], helyes);
+        }
 
 		public string KerdesSzoveg { get => kerdesSzoveg; set => kerdesSzoveg = value; }
 		public List<string> Valaszok { get => valaszok; set => valaszok = value; }
 		public string Helyes { get => helyes; set => helyes = value; }
 		public string Kategoria { get => kategoria; set => kategoria = value; }
 		public int Szint { get => szint; set => szint = value; }
-	}
+        public int HelyesIndex { get => helyesIndex; set => helyesIndex = value; }
+    }
 }
